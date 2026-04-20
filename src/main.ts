@@ -8,10 +8,10 @@ function initializeSeatMatrix(): number[][] {
 // Marks a seat as occupied (1) if available, returning a success or failure message
 function reserveSeat(matrix: number[][], row: number, col: number): string {
   if (matrix[row][col] === 1) {
-    return `Seat (${row}, ${col}) is already occupied.`;
+    return `Seat (${row + 1}, ${col + 1}) is already occupied.`;
   }
   matrix[row][col] = 1;
-  return `Seat (${row}, ${col}) successfully reserved.`;
+  return `Seat (${row + 1}, ${col + 1}) successfully reserved.`;
 }
 
 // Searches each row for the first pair of consecutive available seats, returning their position or null if none found
@@ -36,9 +36,9 @@ function countAvailability(matrix: number[][]): { occupied: number; available: n
 
 // Prints the seat matrix with column numbers as a header and row numbers on each row; X = occupied, L = available
 function displaySeatMatrix(matrix: number[][]): void {
-  console.log("  " + Array.from({ length: 10 }, (_, i) => i).join(" "));
+  console.log("   " + Array.from({ length: 10 }, (_, i) => i + 1).join(" "));
   matrix.forEach((row, rowIndex) => {
-    console.log(rowIndex + " " + row.map(seat => (seat === 1 ? "X" : "L")).join(" "));
+    console.log((rowIndex + 1) + "  " + row.map(seat => (seat === 1 ? "X" : "L")).join(" "));
   });
 }
 
@@ -49,7 +49,8 @@ console.log("=== Scenario 1: Empty Room ===");
 const matrix1 = initializeSeatMatrix();
 displaySeatMatrix(matrix1);
 console.log("Availability:", countAvailability(matrix1));
-console.log("Adjacent seats:", findAdjacentSeats(matrix1));
+const adj1 = findAdjacentSeats(matrix1);
+console.log("Adjacent seats:", adj1 ? { row: adj1.row + 1, col1: adj1.col1 + 1, col2: adj1.col2 + 1 } : null);
 
 // --- Scenario 2: Partially Filled Room ---
 console.log("\n=== Scenario 2: Partially Filled Room ===");
@@ -61,7 +62,8 @@ console.log(reserveSeat(matrix2, 3, 3));
 console.log(reserveSeat(matrix2, 0, 1)); // already occupied
 displaySeatMatrix(matrix2);
 console.log("Availability:", countAvailability(matrix2));
-console.log("Adjacent seats:", findAdjacentSeats(matrix2));
+const adj2 = findAdjacentSeats(matrix2);
+console.log("Adjacent seats:", adj2 ? { row: adj2.row + 1, col1: adj2.col1 + 1, col2: adj2.col2 + 1 } : null);
 
 // --- Scenario 3: Nearly Full Room ---
 console.log("\n=== Scenario 3: Nearly Full Room ===");
@@ -76,7 +78,8 @@ for (let r = 0; r < 8; r++) {
 }
 displaySeatMatrix(matrix3);
 console.log("Availability:", countAvailability(matrix3));
-console.log("Adjacent seats:", findAdjacentSeats(matrix3));
+const adj3 = findAdjacentSeats(matrix3);
+console.log("Adjacent seats:", adj3 ? { row: adj3.row + 1, col1: adj3.col1 + 1, col2: adj3.col2 + 1 } : null);
 
 // --- Scenario 4: Full Room ---
 console.log("\n=== Scenario 4: Full Room ===");
