@@ -34,21 +34,28 @@ function countAvailability(matrix: number[][]): { occupied: number; available: n
   return { occupied, available };
 }
 
-// Prints the seat matrix with column numbers as a header and row numbers on each row; X = occupied, L = available
+// Prints the seat matrix with a styled header, bracketed seat labels, and column/row indices
 function displaySeatMatrix(matrix: number[][]): void {
-  console.log("   " + Array.from({ length: 10 }, (_, i) => i + 1).join(" "));
+  const divider = "==========================================";
+  console.log(divider);
+  console.log("        CINEMA SEATING CHART");
+  console.log(divider);
+  console.log("    " + Array.from({ length: 10 }, (_, i) => String(i + 1).padStart(3).padEnd(5)).join(" "));
   matrix.forEach((row, rowIndex) => {
-    console.log((rowIndex + 1) + "  " + row.map(seat => (seat === 1 ? "X" : "L")).join(" "));
+    const rowLabel = String(rowIndex + 1).padStart(2);
+    console.log(rowLabel + "  " + row.map(seat => (seat === 1 ? "[ X ]" : "[ L ]")).join(" "));
   });
+  console.log(divider);
 }
 
 // Main Program - Testing all scenarios
 
 // --- Scenario 1: Empty Room ---
-console.log("=== Scenario 1: Empty Room ===");
+console.log("\n=== Scenario 1: Empty Room ===");
 const matrix1 = initializeSeatMatrix();
 displaySeatMatrix(matrix1);
-console.log("Availability:", countAvailability(matrix1));
+const avail1 = countAvailability(matrix1);
+console.log(`Occupied: ${avail1.occupied} | Available: ${avail1.available}`);
 const adj1 = findAdjacentSeats(matrix1);
 console.log("Adjacent seats:", adj1 ? { row: adj1.row + 1, col1: adj1.col1 + 1, col2: adj1.col2 + 1 } : null);
 
@@ -61,7 +68,8 @@ console.log(reserveSeat(matrix2, 2, 5));
 console.log(reserveSeat(matrix2, 3, 3));
 console.log(reserveSeat(matrix2, 0, 1)); // already occupied
 displaySeatMatrix(matrix2);
-console.log("Availability:", countAvailability(matrix2));
+const avail2 = countAvailability(matrix2);
+console.log(`Occupied: ${avail2.occupied} | Available: ${avail2.available}`);
 const adj2 = findAdjacentSeats(matrix2);
 console.log("Adjacent seats:", adj2 ? { row: adj2.row + 1, col1: adj2.col1 + 1, col2: adj2.col2 + 1 } : null);
 
@@ -77,7 +85,8 @@ for (let r = 0; r < 8; r++) {
   }
 }
 displaySeatMatrix(matrix3);
-console.log("Availability:", countAvailability(matrix3));
+const avail3 = countAvailability(matrix3);
+console.log(`Occupied: ${avail3.occupied} | Available: ${avail3.available}`);
 const adj3 = findAdjacentSeats(matrix3);
 console.log("Adjacent seats:", adj3 ? { row: adj3.row + 1, col1: adj3.col1 + 1, col2: adj3.col2 + 1 } : null);
 
@@ -91,5 +100,6 @@ for (let r = 0; r < 8; r++) {
 }
 displaySeatMatrix(matrix4);
 console.log(reserveSeat(matrix4, 0, 0)); // all occupied
-console.log("Availability:", countAvailability(matrix4));
+const avail4 = countAvailability(matrix4);
+console.log(`Occupied: ${avail4.occupied} | Available: ${avail4.available}`);
 console.log("Adjacent seats:", findAdjacentSeats(matrix4));
